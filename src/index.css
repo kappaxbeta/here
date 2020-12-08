@@ -11,3 +11,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: ComicNeue;
+  src: url('./font/Comic_Neue/ComicNeue-Regular.ttf');
+}
+
+@font-face {
+  font-family: ComicNeue;
+  src: url('./font/Comic_Neue/ComicNeue-Bold.ttf');
+  font-weight: bold;
+}
+@font-face {
+  font-family: ComicNeue;
+  src: url('./font/Comic_Neue/ComicNeue-Italic.ttf');
+  font-style: italic;
+}
+@font-face {
+  font-family: ComicNeue;
+  src: url('./font/Comic_Neue/ComicNeue-BoldItalic.ttf');
+  font-weight: bold;
+  font-style: italic;
+}
+

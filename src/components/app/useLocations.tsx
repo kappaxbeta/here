@@ -4,24 +4,40 @@ import platform, {H} from "../map/Here";
 // Get an instance of the search service:
 const service = platform.getSearchService();
 
-const useLocation = () => {
-    const [locations, setLocations] = useState([]);
+export interface Location {
+    Name: string;
+    Latitude: number;
+    Longitude: number;
+    position: any;
+    title: any;
+    uid: string;
+};
+
+/**
+ * @return {array} returns the location and modifier
+ */
+// TODO maybe using Redux would helpful
+const useLocations = () => {
+    const [locations, setLocations] = useState<Location[]>([]);
 
     const addList = (values) => {
         values.forEach((i) => {
             service.reverseGeocode({at: i.Latitude + ',' + i.Longitude}, (result : any) => {
                 result.items.forEach((item:any) => {
-                    // @ts-ignore
-                    setLocations((items: any[]) => ([...items, {...item, ...i, uid: ID()}]));
+                    const newItem = {
+                        title: item.title,
+                        position: item.position
+                    };
+
+                    setLocations((items: Location[]) => ([...items, {...newItem, ...i, uid: ID()}]));
                 });
             })
         })
     };
 
-    const removeItem = (value) => {
+    const removeItem = (value: Location) => {
         setLocations((items) => {
-            return items.filter(function(item){
-                // @ts-ignore
+            return items.filter(function(item: Location){
                 return item.uid !== value.uid;
             });
         });
@@ -30,12 +46,15 @@ const useLocation = () => {
     const updateItem = (value) => {
         service.reverseGeocode({at: value.Latitude + ',' + value.Longitude}, (result : any) => {
             result.items.forEach((itemNew: any) => {
-                // @ts-ignore
-                setLocations((items) => {
-                    return items.map(function(item){
-                        // @ts-ignore
+                const pickedItem = {
+                    title: itemNew.title,
+                    position: itemNew.position
+                };
+
+                setLocations((items: Location[]) => {
+                    return items.map(function(item: Location){
                         if( item.uid === value.uid) {
-                            return {...itemNew, ...value};
+                            return {...pickedItem, ...value};
                         }
                         return item;
                     });
@@ -52,6 +71,6 @@ const useLocation = () => {
 
     return [locations, addList, updateItem, removeItem, clearList];
 
-}
+};
 
-export default useLocation;
+export default useLocations;
